@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Tebak-Tebakan Angka</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fdd835, #f06292);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .game-container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      font-size: 18px;
+      width: 80%;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    button {
+      background: #f06292;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #ec407a;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #444;
+      min-height: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h2>Tebak-Tebakan Angka (1 - 10)</h2>
+    <p id="message">Ayo tebak angka dari 1 sampai 10!</p>
+    <input type="number" id="tebakan" min="1" max="10" placeholder="Masukkan angka">
+    <br><br>
+    <button onclick="tebak()">TEBAK!</button>
+  </div>
+
+  <!-- Sound effects -->
+  <audio id="benar" src="benar.mp3"></audio>
+  <audio id="salah" src="salah.mp3"></audio>
+  <audio id="kalah" src="kalah.mp3"></audio>
+
+  <script>
+    const angka = Math.floor(Math.random() * 10) + 1;
+    let kesempatan = 3;
+
+    const suaraBenar = document.getElementById("benar");
+    const suaraSalah = document.getElementById("salah");
+    const suaraKalah = document.getElementById("kalah");
+
+    function tebak() {
+      const input = document.getElementById("tebakan").value;
+      const tebakan = parseInt(input);
+      const pesan = document.getElementById("message");
+
+      if (!tebakan || tebakan < 1 || tebakan > 10) {
+        pesan.textContent = "Masukkan angka valid antara 1 dan 10.";
+        return;
+      }
+
+      if (kesempatan > 0) {
+        if (tebakan === angka) {
+          suaraBenar.play();
+          pesan.textContent = "Benar! Kamu menang!";
+        } else {
+          kesempatan--;
+          if (kesempatan === 0) {
+            suaraKalah.play();
+            pesan.textContent = "Kamu kalah! Angka yang benar: " + angka;
+          } else {
+            suaraSalah.play();
+            pesan.textContent = "Salah! Sisa kesempatan: " + kesempatan;
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>
